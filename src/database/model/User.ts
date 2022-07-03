@@ -4,11 +4,12 @@ import Role from './Role';
 export const DOCUMENT_NAME = 'User';
 export const COLLECTION_NAME = 'users';
 
-export default interface User extends Document {
-  name: string;
-  email?: string;
-  password?: string;
-  profilePicUrl?: string;
+export default interface User extends Document { 
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: number;
+  password: string;
   roles: Role[];
   verified?: boolean;
   status?: boolean;
@@ -18,7 +19,13 @@ export default interface User extends Document {
 
 const schema = new Schema(
   {
-    name: {
+    firstName: {
+      type: Schema.Types.String,
+      required: true,
+      trim: true,
+      maxlength: 100,
+    },
+    lastName: {
       type: Schema.Types.String,
       required: true,
       trim: true,
@@ -31,13 +38,18 @@ const schema = new Schema(
       trim: true,
       select: false,
     },
+    phoneNumber: {
+      type: Schema.Types.Number,
+      required: true,
+      trim: true,
+      maxlength: 10,
+      minlength: 10
+    },
     password: {
       type: Schema.Types.String,
       select: false,
-    },
-    profilePicUrl: {
-      type: Schema.Types.String,
-      trim: true,
+      required: true,
+      maxlength: 100
     },
     roles: {
       type: [
@@ -55,7 +67,7 @@ const schema = new Schema(
     },
     status: {
       type: Schema.Types.Boolean,
-      default: true,
+      default: false,
     },
     createdAt: {
       type: Date,

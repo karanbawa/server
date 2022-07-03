@@ -5,9 +5,9 @@ export const COLLECTION_NAME = 'roles';
 
 export const enum RoleCode {
   LEARNER = 'LEARNER',
-  WRITER = 'WRITER',
-  EDITOR = 'EDITOR',
+  SUB_ADMIN = 'SUB ADMIN',
   ADMIN = 'ADMIN',
+  SUPER_ADMIN = 'SUPER ADMIN'
 }
 
 export default interface Role extends Document {
@@ -22,7 +22,7 @@ const schema = new Schema(
     code: {
       type: Schema.Types.String,
       required: true,
-      enum: [RoleCode.LEARNER, RoleCode.WRITER, RoleCode.EDITOR, RoleCode.ADMIN],
+      enum: [RoleCode.LEARNER, RoleCode.SUB_ADMIN, RoleCode.ADMIN, RoleCode.SUPER_ADMIN],
     },
     status: {
       type: Schema.Types.Boolean,

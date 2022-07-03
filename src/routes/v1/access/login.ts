@@ -31,7 +31,7 @@ export default router.post(
     const tokens = await createTokens(user, accessTokenKey, refreshTokenKey);
 
     new SuccessResponse('Login Success', {
-      user: _.pick(user, ['_id', 'name', 'roles', 'profilePicUrl']),
+      user: _.pick(user, ['_id', 'firstName', 'lastName', 'email', 'phoneNumber', 'roles']),
       tokens: tokens,
     }).send(res);
   }),

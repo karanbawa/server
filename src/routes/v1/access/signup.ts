@@ -17,30 +17,30 @@ const router = express.Router();
 
 router.post(
   '/basic',
-  validator(schema.signup), 
+  validator(schema.signup),
   asyncHandler(async (req: RoleRequest, res) => {
     const user = await UserRepo.findByEmail(req.body.email);
     if (user) throw new BadRequestError('User already registered');
-
     const accessTokenKey = crypto.randomBytes(64).toString('hex');
     const refreshTokenKey = crypto.randomBytes(64).toString('hex');
     const passwordHash = await bcrypt.hash(req.body.password, 10);
 
     const { user: createdUser, keystore } = await UserRepo.create(
       {
-        name: req.body.name,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         email: req.body.email,
-        profilePicUrl: req.body.profilePicUrl,
+        phoneNumber: req.body.phoneNumber,
         password: passwordHash,
       } as User,
       accessTokenKey,
       refreshTokenKey,
-      RoleCode.LEARNER,
+      RoleCode.ADMIN,
     );
 
     const tokens = await createTokens(createdUser, keystore.primaryKey, keystore.secondaryKey);
     new SuccessResponse('Signup Successful', {
-      user: _.pick(createdUser, ['_id', 'name', 'email', 'roles', 'profilePicUrl']),
+      user: _.pick(createdUser, ['_id', 'firstName', 'lastName', 'email', 'roles', 'status', 'verified']),
       tokens: tokens,
     }).send(res);
   }),

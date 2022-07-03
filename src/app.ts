@@ -10,7 +10,7 @@ import routesV1 from './routes/v1';
 import swaggerUi = require('swagger-ui-express');
 import fs = require('fs');
 
-process.on('uncaughtException', (e) => {
+process.on('uncaughtException', (e) => {  
  Logger.error(e);
 });
 
@@ -30,7 +30,7 @@ app.use('/swagger', swaggerUi.serve,
 swaggerUi.setup(swaggerDocument, undefined, undefined, customCss));
  
 // Routes
-app.use('/v1', routesV1);
+app.use('/v1', routesV1); 
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => next(new NotFoundError()));
