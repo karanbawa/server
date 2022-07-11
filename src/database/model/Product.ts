@@ -87,7 +87,7 @@ const schema = new Schema(
     },
     inventory: {
       status: {
-      type: Schema.Types.Boolean,
+      type: Schema.Types.String,
       required: false,
       },
       inventoryQuantity: {

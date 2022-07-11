@@ -130,8 +130,11 @@ router.delete(
 router.get(
   '/submitted/all',
   asyncHandler(async (req: ProtectedRequest, res) => {
-    const blogs = await ProductRepo.findAllSubmissionsForProducts(req.user);
-    return new SuccessResponse('success', blogs).send(res);
+    const products = await ProductRepo.findAllSubmissionsForProducts(req.user);
+    return new SuccessResponse('success',  {
+      products: products,
+      totalProducts: products.length,
+  }).send(res);
   }),
 );
 
