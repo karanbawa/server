@@ -159,7 +159,7 @@ router.get(
   validator(schema.productId, ValidationSource.PARAM),
   asyncHandler(async (req: ProtectedRequest, res) => {
     const product = await ProductRepo.findBlogAllDataById(new Types.ObjectId(req.params.id));
-    if (!product) throw new BadRequestError('Blog does not exists');
+    if (!product) throw new BadRequestError('Product does not exists');
     if (!product.author._id.equals(req.user._id))
       throw new ForbiddenError("You don't have necessary permissions");
     new SuccessResponse('success', product).send(res);
