@@ -24,7 +24,7 @@ const formatEndpoint = (endpoint: string) => endpoint.replace(/\s/g, '').replace
 
 router.post( 
   '/',
-  validator(schema.productCreate),
+  validator(schema.productCreate), 
   asyncHandler(async (req: ProtectedRequest, res) => {
 
     const createdProduct = await ProductRepo.create({
@@ -56,7 +56,7 @@ router.put(
   validator(schema.productId, ValidationSource.PARAM),
   validator(schema.productUpdate),
   asyncHandler(async (req: ProtectedRequest, res) => {
-    const product = await ProductRepo.findBlogAllDataById(new Types.ObjectId(req.params.id));
+    const product = await ProductRepo.findProductAllDataById(new Types.ObjectId(req.params.id));
     if (product == null) throw new BadRequestError('Product does not exists');
     if (!product.author._id.equals(req.user._id))
       throw new ForbiddenError("You don't have necessary permissions");
@@ -115,17 +115,29 @@ router.put(
 
 router.delete(
   '/id/:id',
-  validator(schema.productId, ValidationSource.PARAM),
   asyncHandler(async (req: ProtectedRequest, res) => {
-    const product = await ProductRepo.findBlogAllDataById(new Types.ObjectId(req.params.id));
+    const product = await ProductRepo.findProductAllDataById(new Types.ObjectId(req.params.id));
     if (!product) throw new BadRequestError('Product does not exists');
     if (!product.author._id.equals(req.user._id))
       throw new ForbiddenError("You don't have necessary permissions");
 
-    await ProductRepo.update(product);
+    await ProductRepo.deleteOne(product);
     return new SuccessMsgResponse('Product deleted successfully').send(res);
   }),
 );
+
+// router.delete(
+//   '/delete/all',
+//   asyncHandler(async (req: ProtectedRequest, res) => {
+//     const products = await ProductRepo.findAllSubmissionsForProducts(req.user);
+//     // if (!products) throw new BadRequestError('Product does not exists');
+//     // if (!products.author._id.equals(req.user._id))
+//     //   throw new ForbiddenError("You don't have necessary permissions");
+
+//     await ProductRepo.updateAll(req.user, products);
+//     return new SuccessMsgResponse('Product deleted successfully').send(res);
+//   }),
+// );
 
 router.get(
   '/submitted/all',
@@ -158,7 +170,7 @@ router.get(
   '/id/:id',
   validator(schema.productId, ValidationSource.PARAM),
   asyncHandler(async (req: ProtectedRequest, res) => {
-    const product = await ProductRepo.findBlogAllDataById(new Types.ObjectId(req.params.id));
+    const product = await ProductRepo.findProductAllDataById(new Types.ObjectId(req.params.id));
     if (!product) throw new BadRequestError('Product does not exists');
     if (!product.author._id.equals(req.user._id))
       throw new ForbiddenError("You don't have necessary permissions");

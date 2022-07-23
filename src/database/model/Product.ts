@@ -45,7 +45,7 @@ export default interface Product extends Document {
   discount?: DiscountType;
   isVisible: boolean;
   media?: MediaType[];
-  categoryIds?: number[],
+  categoryIds?: string[],
   variants?: VariantType[],
   isManageProductItems?: boolean,
   isTrackingInventory?: boolean,
@@ -137,7 +137,8 @@ const schema = new Schema(
     }],
     categoryIds:[
       {
-        type: Schema.Types.Number,
+        type: Schema.Types.String,
+        ref: 'Category',
         required: false,
       }
     ],
@@ -199,8 +200,8 @@ const schema = new Schema(
     versionKey: false,
   },
 ).index(
-  { name: 'text', description: 'text' },
-  { weights: { title: 1, description: 3 }, background: false },
+  { name: 'text', productItemsSummary: 'text' },
+  { weights: { name: 1, productItemsSummary: 3 }, background: false },
 );
 
 export const ProductModel = model<Product>(DOCUMENT_NAME, schema, COLLECTION_NAME);

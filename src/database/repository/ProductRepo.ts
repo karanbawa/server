@@ -2,7 +2,7 @@ import Product, { ProductModel } from '../model/Product';
 import { Types } from 'mongoose';
 import User from '../model/User';
 
-export default class BlogRepo {
+export default class ProductRepo {
   private static AUTHOR_DETAIL = 'name';
   private static BLOG_INFO_ADDITIONAL = '+isSubmitted +isDraft +isPublished +createdBy +updatedBy';
   private static BLOG_ALL_DATA =
@@ -23,6 +23,20 @@ export default class BlogRepo {
       .exec();
   }
 
+  public static deleteOne(product: Product): Promise<any> {
+    product.updatedAt = new Date();
+    return ProductModel.deleteOne({ _id: product._id })
+      .lean<Product>()
+      .exec();
+  }
+
+  public static deleteMany(query: Record<string, unknown>): Promise<any> {
+    query.updatedAt = new Date();
+    return ProductModel.deleteMany({})
+      .lean<Product>()
+      .exec();
+  }
+  
   public static findInfoById(id: Types.ObjectId): Promise<Product | null> {
     return ProductModel.findOne({ _id: id, status: true })
       .populate('author', this.AUTHOR_DETAIL)
@@ -46,7 +60,7 @@ export default class BlogRepo {
   //     .exec();
   // }
 
-  public static findBlogAllDataById(id: Types.ObjectId): Promise<Product | null> {
+  public static findProductAllDataById(id: Types.ObjectId): Promise<Product | null> {
     return ProductModel.findOne({ _id: id })
       .select(this.BLOG_ALL_DATA)
       .populate('author', this.AUTHOR_DETAIL)

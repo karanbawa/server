@@ -7,6 +7,7 @@ import logout from './access/logout';
 // import blogList from './blog/blogList';
 // import blogDetail from './blog/blogDetail';
 import products from './products/products';
+// import categories from './categories/categories';
 // import editor from './blog/editor';
 // import user from './profile/user';
 
@@ -21,6 +22,7 @@ router.use('/signup', signup);
 router.use('/login', login);
 router.use('/logout', logout);
 router.use('/products', products);
+// router.use('/categories', categories);
 // router.use('/token', token);
 // // router.use('/blogs', blogList);
 // // router.use('/blog', blogDetail);
