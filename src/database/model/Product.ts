@@ -1,5 +1,6 @@
 import { string } from '@hapi/joi';
 import { Schema, model, Document } from 'mongoose';
+import Category from './Category';
 import User from './User';
 
 export const DOCUMENT_NAME = 'Product';
@@ -37,7 +38,7 @@ export interface MediaType {
 export default interface Product extends Document {
   name: string;
   productItemsSummary?: string;
-  price: string;
+  price: number;
   currency: string;
   tags?: string[];
   author: User;
@@ -45,7 +46,8 @@ export default interface Product extends Document {
   discount?: DiscountType;
   isVisible: boolean;
   media?: MediaType[];
-  categoryIds?: string[],
+  categoryIds?: Category[],
+  category?: Category,
   variants?: VariantType[],
   isManageProductItems?: boolean,
   isTrackingInventory?: boolean,
@@ -69,6 +71,10 @@ const schema = new Schema(
       required: false,
       maxlength: 500,
       trim: true,
+    },
+    price: {
+      type: Schema.Types.Number,
+      required: false,
     },
     currency: {
       type: Schema.Types.String,
@@ -137,11 +143,16 @@ const schema = new Schema(
     }],
     categoryIds:[
       {
-        type: Schema.Types.String,
+        type: Schema.Types.ObjectId,
         ref: 'Category',
         required: false,
       }
     ],
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: 'Category',
+      required: true,
+    },
     quantity: {
       type: Schema.Types.String,
       required: false,

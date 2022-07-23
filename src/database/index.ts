@@ -38,32 +38,32 @@ mongoose
 // When successfully connected
 mongoose.connection.on('connected', (db) => {
   Logger.info('Mongoose default connection open to ' + dbURI);
-   UserModel.create({
-    firstName: 'karan',
-    lastName: 'bawa',
-    email: 'karanbawab1@gmail.com',
-    phoneNumber: 8588938349,
-    password: 'Karanbawab1@',
-    createdAt: new Date(),
-    updatedAt: new Date()
-   });
+  //  UserModel.create({
+  //   firstName: 'karan',
+  //   lastName: 'bawa',
+  //   email: 'karanbawab1@gmail.com',
+  //   phoneNumber: 8588938349,
+  //   password: 'Karanbawab1@',
+  //   createdAt: new Date(),
+  //   updatedAt: new Date()
+  //  });
 
-   ApiKeyModel.create({
-    key: 'GCMUDiuY5a7WvyUNt9n3QztToSHzK7Uj',
-    version: 1,
-    metadata: 'To be used by the karan vendor',
-    status: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-   });
-   RoleModel.insertMany(
-    [
-      { code: 'LEARNER', status: true, createdAt: new Date(), updatedAt: new Date() },
-      { code: 'SUB ADMIN', status: true, createdAt: new Date(), updatedAt: new Date() },
-      { code: 'ADMIN', status: true, createdAt: new Date(), updatedAt: new Date() },
-      { code: 'SUPER ADMIN', status: true, createdAt: new Date(), updatedAt: new Date() },
-    ]
-   )
+  //  ApiKeyModel.create({
+  //   key: 'GCMUDiuY5a7WvyUNt9n3QztToSHzK7Uj',
+  //   version: 1,
+  //   metadata: 'To be used by the karan vendor',
+  //   status: true,
+  //   createdAt: new Date(),
+  //   updatedAt: new Date(),
+  //  });
+  //  RoleModel.insertMany(
+  //   [
+  //     { code: 'LEARNER', status: true, createdAt: new Date(), updatedAt: new Date() },
+  //     { code: 'SUB ADMIN', status: true, createdAt: new Date(), updatedAt: new Date() },
+  //     { code: 'ADMIN', status: true, createdAt: new Date(), updatedAt: new Date() },
+  //     { code: 'SUPER ADMIN', status: true, createdAt: new Date(), updatedAt: new Date() },
+  //   ]
+  //  )
 });
 
 // If the connection throws an error

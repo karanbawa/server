@@ -2,7 +2,10 @@ import Joi from '@hapi/joi';
 import { JoiObjectId } from '../../../helpers/validator';
 
 export default {
-  categoryId: Joi.object().keys({
+  orderId: Joi.object().keys({
     id: JoiObjectId().required(),
+  }),
+  userId: Joi.object().keys({
+    userid: JoiObjectId().required(),
   }),
 };

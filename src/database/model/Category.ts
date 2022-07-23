@@ -2,7 +2,7 @@ import { Schema, model, Document } from 'mongoose';
 import User from './User';
 
 export const DOCUMENT_NAME = 'Category';
-export const COLLECTION_NAME = 'Categories';
+export const COLLECTION_NAME = 'categories';
 
 export default interface Category extends Document {
   name?: string;
