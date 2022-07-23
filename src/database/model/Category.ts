@@ -6,6 +6,8 @@ export const COLLECTION_NAME = 'Categories';
 
 export default interface Category extends Document {
   name?: string;
+  icon?: string;
+  color?: string;
   productIds?: string[];
   numOfProducts?: Number;
   author: User;
@@ -21,7 +23,16 @@ const schema = new Schema(
       type: Schema.Types.String,
       required: true,
       maxlength: 500,
-      trim: true,
+    },
+    icon: {
+      type: Schema.Types.String,
+      required: true,
+      maxlength: 500,
+    },
+    color: {
+      type: Schema.Types.String,
+      required: true,
+      maxlength: 500,
     },
     productIds:[
       {

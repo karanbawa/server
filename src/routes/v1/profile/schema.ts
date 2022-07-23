@@ -6,7 +6,12 @@ export default {
     id: JoiObjectId().required(),
   }),
   profile: Joi.object().keys({
-    name: Joi.string().optional().min(1).max(200),
-    profilePicUrl: Joi.string().optional().uri(),
+    firstName: Joi.string().required().min(3),
+    lastName: Joi.string().required().min(3),
+    phoneNumber: Joi.string().required().min(10).max(10),
   }),
+  emailId: Joi.object().keys({
+    email: Joi.string().required().email(),
+  }),
+  
 };
