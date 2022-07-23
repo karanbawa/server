@@ -9,7 +9,7 @@ import logout from './access/logout';
 import products from './products/products';
 // import categories from './categories/categories';
 // import editor from './blog/editor';
-// import user from './profile/user';
+import user from './profile/user';
 
 const router = express.Router(); 
 
@@ -22,11 +22,11 @@ router.use('/signup', signup);
 router.use('/login', login);
 router.use('/logout', logout);
 router.use('/products', products);
+router.use('/profile', user);
 // router.use('/categories', categories);
 // router.use('/token', token);
 // // router.use('/blogs', blogList);
 // // router.use('/blog', blogDetail);
 // // router.use('/editor/blog', editor);
-// // router.use('/profile', user);
 
 export default router;

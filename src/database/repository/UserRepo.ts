@@ -42,8 +42,24 @@ export default class UserRepo {
       .exec();
   }
 
+  public static findInactiveProfile(id: Types.ObjectId): Promise<User | null> {
+    return UserModel.findOne({ _id: id, deleted: true })
+      .select('+roles')
+      .populate({
+        path: 'roles',
+        match: { deleted: true },
+        select: { code: 1 },
+      })
+      .lean<User>()
+      .exec();
+  }
+
   public static findPublicProfileById(id: Types.ObjectId): Promise<User | null> {
     return UserModel.findOne({ _id: id, status: true }).lean<User>().exec();
+  }
+
+  public static countUsers(): Promise<any> {
+    return UserModel.countDocuments().lean().exec();
   }
 
   public static async create(
@@ -80,10 +96,40 @@ export default class UserRepo {
     return { user: user, keystore: keystore };
   }
 
-  public static updateInfo(user: User): Promise<any> {
+  public static updateInfo(user: User): Promise<User> {
     user.updatedAt = new Date();
     return UserModel.updateOne({ _id: user._id }, { $set: { ...user } })
+      .lean<User>()
+      .exec();
+  }
+
+  public static findAllUsersList(): Promise<User[]> {
+    return UserModel.find()
+    .select('+roles')
+    .populate({
+      path: 'roles',
+      match: { status: true },
+      select: { code: 1 },
+    })
+    .lean<User[]>()
+    .exec();
+  }
+
+  public static deleteOne(id: Types.ObjectId, user: User): Promise<any> {
+    return UserModel.updateOne({ _id: id }, { $set: { ...user, deleted: true } })
       .lean()
+      .exec();
+  }
+
+  public static activatUserStatus(user: User): Promise<User> {
+    return UserModel.updateOne({ _id: user._id }, { $set: { ...user, deleted: true } })
+      .select('+roles')
+      .populate({
+        path: 'roles',
+        match: { status: true },
+        select: { code: 1 },
+      })
+      .lean<User>()
       .exec();
   }
 }

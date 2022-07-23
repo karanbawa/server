@@ -13,6 +13,7 @@ export default interface User extends Document {
   roles: Role[];
   verified?: boolean;
   status?: boolean;
+  deleted?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -66,6 +67,10 @@ const schema = new Schema(
       default: false,
     },
     status: {
+      type: Schema.Types.Boolean,
+      default: false,
+    },
+    deleted: {
       type: Schema.Types.Boolean,
       default: false,
     },

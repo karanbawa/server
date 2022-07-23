@@ -13,7 +13,8 @@ import _ from 'lodash';
 
 const router = express.Router();
 
-export default router.post(
+// Login User
+router.post(
   '/basic',
   validator(schema.userCredential),
   asyncHandler(async (req, res) => {
@@ -36,3 +37,5 @@ export default router.post(
     }).send(res);
   }),
 );
+
+export default router;
