@@ -11,6 +11,7 @@ import categories from './categories/categories';
 import orders from './orders/orders';
 // import editor from './blog/editor';
 import user from './profile/user';
+import customers from './customers/Customers';
 
 const router = express.Router(); 
 
@@ -26,6 +27,7 @@ router.use('/products', products);
 router.use('/profile', user);
 router.use('/categories', categories);
 router.use('/orders', orders);
+router.use('/customer', customers);
 // router.use('/token', token);
 // // router.use('/blogs', blogList);
 // // router.use('/blog', blogDetail);

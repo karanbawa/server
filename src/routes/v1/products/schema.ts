@@ -32,7 +32,7 @@ export default {
     tags: Joi.array().optional().min(0).items(Joi.string().uppercase()),
     isManageProductItems: Joi.boolean().optional(),
     isTrackingInventory: Joi.boolean().optional(),
-    categoryIds: Joi.array().optional().min(1).items(Joi.number())
+    category: Joi.string().optional().min(1)
   }),
   productUpdate: Joi.object().keys({
     name: Joi.string().required().min(3).max(500),
@@ -48,6 +48,6 @@ export default {
     tags: Joi.array().optional().min(0).items(Joi.string().uppercase()),
     isManageProductItems: Joi.boolean().optional(),
     isTrackingInventory: Joi.boolean().optional(),
-    categoryIds: Joi.array().optional().min(1).items(Joi.number())
+    category: Joi.string().optional().min(1)
   }),
 };

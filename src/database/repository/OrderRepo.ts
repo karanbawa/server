@@ -14,7 +14,7 @@ export default class OrderRepo {
       const now = new Date();
       orderItem.createdAt = now;
       orderItem.updatedAt = now;
-      const orderedItem = await OrderItemModel.create(orderItem);
+      const orderedItem = await OrderItemModel.create(orderItem); 
       return { orderItem: orderedItem };
     }
 
@@ -44,7 +44,7 @@ export default class OrderRepo {
       .populate('author' ,'name').sort({'dateOrdered':-1})
       .populate({ 
           path: 'orderItems', populate: { 
-              path: 'product', populate: 'categoryIds'}
+              path: 'product', populate: 'category'}
       })
       .sort({ updatedAt: -1 })
       .lean<Order[]>()
@@ -74,7 +74,7 @@ export default class OrderRepo {
     return OrderModel.find({user: id})
       .populate({
           path: 'orderItems', populate: {
-              path: 'product', populate: 'categoryIds'
+              path: 'product', populate: 'category'
           }
       }).sort({ 'dateOrdered': -1 })
       .lean<Order>()

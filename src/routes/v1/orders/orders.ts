@@ -29,8 +29,7 @@ router.post(
 
     const orderItemsIds = Promise.all(req.body.orderItems.map( async (orderItem: { quantity: number; product: any; }) => {
 
-
-      const newOrderItem = await OrderRepo.createOrderItem({
+      const newOrderItem = await OrderRepo.createOrderItem({ 
         quantity: orderItem.quantity,
         product: orderItem.product,
         author: req.user,
@@ -38,7 +37,6 @@ router.post(
         updatedBy: req.user,
       } as OrderItem);
 
-      // console.log('product id', newOrderItem);
       return newOrderItem.orderItem._id;
     }))
 
@@ -50,9 +48,6 @@ router.post(
         const totalPrice: number = orderItem.product.price * orderItem.quantity;
       return totalPrice
   }));
-
-  console.log('orderItemsIdsResolved ', orderItemsIdsResolved);
-  console.log('totalPrices ', totalPrices);
 
   const totalPrice = totalPrices.reduce((a, b) => a+ b , 0 );
 
@@ -78,7 +73,7 @@ router.post(
   }),
 );
 
-// Get Orders
+// Get all Orders
 router.get(
   '/',
   asyncHandler(async (req: ProtectedRequest, res) => {

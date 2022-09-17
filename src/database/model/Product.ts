@@ -46,8 +46,8 @@ export default interface Product extends Document {
   discount?: DiscountType;
   isVisible: boolean;
   media?: MediaType[];
-  categoryIds?: Category[],
   category?: Category,
+  // category?: Category,
   variants?: VariantType[],
   isManageProductItems?: boolean,
   isTrackingInventory?: boolean,
@@ -141,17 +141,10 @@ const schema = new Schema(
         required: false,
       }
     }],
-    categoryIds:[
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Category',
-        required: false,
-      }
-    ],
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
-      required: true,
+      required: false,
     },
     quantity: {
       type: Schema.Types.String,

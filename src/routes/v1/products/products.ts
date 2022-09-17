@@ -1,5 +1,5 @@
 import express from 'express';
-import { SuccessResponse, SuccessMsgResponse } from '../../../core/ApiResponse';
+import { SuccessResponse, SuccessMsgResponse, FailureMsgResponse } from '../../../core/ApiResponse';
 import { ProtectedRequest } from 'app-request';
 import { BadRequestError, ForbiddenError } from '../../../core/ApiError';
 import ProductRepo from '../../../database/repository/ProductRepo';
@@ -12,6 +12,7 @@ import authentication from '../../../auth/authentication';
 import authorization from '../../../auth/authorization';
 import role from '../../../helpers/role';
 import Product from '../../../database/model/Product';
+import CategoryRepo from '../../../database/repository/CategoryRepo';
 
 const router = express.Router();
 
@@ -22,10 +23,14 @@ router.use('/', authentication, role(RoleCode.ADMIN), authorization);
 
 const formatEndpoint = (endpoint: string) => endpoint.replace(/\s/g, '').replace(/\//g, '-');
 
-router.post( 
+router.post(
   '/',
   validator(schema.productCreate), 
   asyncHandler(async (req: ProtectedRequest, res) => {
+
+    const category = await CategoryRepo.findCategoryAllDataById(req.body.category);
+    if (!category)
+      new FailureMsgResponse('Category is not there in record').send(res);
 
     const createdProduct = await ProductRepo.create({
       name: req.body.name,
@@ -41,7 +46,7 @@ router.post(
       variants: req.body.variants,
       isManageProductItems: req.body.isManageProductItems,
       isTrackingInventory: req.body.isTrackingInventory,
-      categoryIds: req.body.isTrackingInventory,
+      category: req.body.category,
       tags: req.body.tags,
       createdBy: req.user,
       updatedBy: req.user,
@@ -72,46 +77,12 @@ router.put(
     product.quantity = req.body.quantity;
     req.body.isManageProductItems ? product.isManageProductItems = true : product.isManageProductItems = false;
     req.body.isTrackingInventory ? product.isTrackingInventory = true : product.isTrackingInventory = false;
-    product.categoryIds = req.body.categoryIds;
+    product.category = req.body.category;
 
     await ProductRepo.update(product);
     new SuccessResponse('Product updated successfully', product).send(res);
   }),
 );
-
-// router.put(
-//   '/submit/:id',
-//   validator(schema.blogId, ValidationSource.PARAM),
-//   asyncHandler(async (req: ProtectedRequest, res) => {
-//     const blog = await BlogRepo.findBlogAllDataById(new Types.ObjectId(req.params.id));
-//     if (!blog) throw new BadRequestError('Blog does not exists');
-//     if (!blog.author._id.equals(req.user._id))
-//       throw new ForbiddenError("You don't have necessary permissions");
-
-//     blog.isSubmitted = true;
-//     blog.isDraft = false;
-
-//     await BlogRepo.update(blog);
-//     return new SuccessMsgResponse('Blog submitted successfully').send(res);
-//   }),
-// );
-
-// router.put(
-//   '/withdraw/:id',
-//   validator(schema.blogId, ValidationSource.PARAM),
-//   asyncHandler(async (req: ProtectedRequest, res) => {
-//     const blog = await BlogRepo.findBlogAllDataById(new Types.ObjectId(req.params.id));
-//     if (!blog) throw new BadRequestError('Blog does not exists');
-//     if (!blog.author._id.equals(req.user._id))
-//       throw new ForbiddenError("You don't have necessary permissions");
-
-//     blog.isSubmitted = false;
-//     blog.isDraft = true;
-
-//     await BlogRepo.update(blog);
-//     return new SuccessMsgResponse('Blog withdrawn successfully').send(res);
-//   }),
-// );
 
 router.delete(
   '/id/:id',
@@ -126,19 +97,6 @@ router.delete(
   }),
 );
 
-// router.delete(
-//   '/delete/all',
-//   asyncHandler(async (req: ProtectedRequest, res) => {
-//     const products = await ProductRepo.findAllSubmissionsForProducts(req.user);
-//     // if (!products) throw new BadRequestError('Product does not exists');
-//     // if (!products.author._id.equals(req.user._id))
-//     //   throw new ForbiddenError("You don't have necessary permissions");
-
-//     await ProductRepo.updateAll(req.user, products);
-//     return new SuccessMsgResponse('Product deleted successfully').send(res);
-//   }),
-// );
-
 router.get(
   '/submitted/all',
   asyncHandler(async (req: ProtectedRequest, res) => {
@@ -149,22 +107,6 @@ router.get(
   }).send(res);
   }),
 );
-
-// router.get(
-//   '/published/all',
-//   asyncHandler(async (req: ProtectedRequest, res) => {
-//     const blogs = await BlogRepo.findAllPublishedForWriter(req.user);
-//     return new SuccessResponse('success', blogs).send(res);
-//   }),
-// );
-
-// router.get(
-//   '/drafts/all',
-//   asyncHandler(async (req: ProtectedRequest, res) => {
-//     const blogs = await BlogRepo.findAllDraftsForWriter(req.user);
-//     return new SuccessResponse('success', blogs).send(res);
-//   }),
-// );
 
 router.get(
   '/id/:id',
